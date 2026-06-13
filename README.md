@@ -19,7 +19,6 @@ Self Hosted di STB Bekas — STB B860H v1 | Amlogic S905X | 1GB RAM | Armbian
 | **Storage** | SDCARD (EMMC rusak) |
 | **Bahasa** | Bash shell script |
 | **Author** | Budi Joi |
-| **Repo** | [github.com/budijoi](https://github.com/budijoi) |
 
 ### Isi Script
 
@@ -60,7 +59,7 @@ Semua layanan menggunakan kredensial yang sama:
 - STB B860H v1 (Amlogic S905X)
 - Sudah terinstal **Armbian** (minimal Ubuntu/Debian based)
 - Koneksi internet stabil
-- SDCARD dengan ruang kosong minimal **4 GB**
+- SDCARD dengan ruang kosong minimal **8 GB**
 - Akses root (sudo)
 
 ### Langkah Instalasi
@@ -68,12 +67,12 @@ Semua layanan menggunakan kredensial yang sama:
 #### 1. Download Script
 
 ```bash
-# Clone repositori
-git clone https://github.com/budijoi/homeserverv3.git
-cd homeserverv3
+# Download langsung
+wget -O install.sh https://raw.githubusercontent.com/budijoi/homeserver-v3/main/install.sh
 
-# Atau download langsung
-wget -O install.sh https://raw.githubusercontent.com/budijoi/homeserverv3/main/install.sh
+# Atau Clone repositori
+git clone https://github.com/budijoi/homeserver-v3.git
+cd homeserver-v3
 ```
 
 #### 2. Beri Izin Eksekusi
@@ -102,7 +101,7 @@ Script akan menampilkan menu interaktif:
   ╔══════════════════════════════════════════════════════╗
   ║     My Home Server v3                               ║
   ║     STB B860H v1 | S905X | 1GB RAM                  ║
-  ║     EMMC Rusak - Semua di SDCARD!                   ║
+  ║     EMMC Rungkad - Semua di SDCARD!                 ║
   ╚══════════════════════════════════════════════════════╝
 
   Pilih komponen yang akan diinstal:
@@ -185,34 +184,6 @@ ip addr show | grep inet
 | **BBR** | TCP congestion control aktif |
 | **Firewall** | UFW: SSH (22), HTTP (80), HTTPS (443), Dashboard (5000) |
 | **sysctl** | swappiness 60, cache pressure 50, dirty ratio 20 |
-
----
-
-## 🤝 Sosial Media
-
-| Platform | Username |
-|----------|----------|
-| **Facebook** | budijoiBBJ |
-| **Instagram** | budijoi_eco |
-| **Threads** | budijoi_eco |
-| **X** | budijoi |
-| **Github** | budijoi |
-
----
-
-## ❤️ Donasi
-
-Dukung pengembangan project ini:
-
-| Metode | Detail |
-|--------|--------|
-| **DANA** | 085323073037 |
-| **Bank Mandiri** | 1310014031126 |
-| **Bank BNI** | 2027537451 |
-| **QRIS** | [Lihat QR](https://raw.githubusercontent.com/budijoi/budijoi.github.io/refs/heads/main/QRDANA2.JPG) |
-| **Konfirmasi** | WhatsApp +6288224553181 |
-
-Donasi dapat dilakukan langsung dari dashboard (tombol Donasi) atau melalui rekening di atas.
 
 ---
 
