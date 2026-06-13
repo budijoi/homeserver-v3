@@ -66,14 +66,14 @@ Semua layanan menggunakan kredensial yang sama:
 
 #### 1. Download Script
 
+#### Download langsung
 ```bash
-# Download langsung
 wget -O install.sh https://raw.githubusercontent.com/budijoi/homeserver-v3/main/install.sh
 chmod +x install.sh
 ./install.sh
 ```
 
-# Atau Clone repositori
+#### Atau Clone repositori
 ```bash
 git clone https://github.com/budijoi/homeserver-v3.git
 cd homeserver-v3
