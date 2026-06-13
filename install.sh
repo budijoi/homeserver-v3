@@ -413,7 +413,12 @@ install_dashboard() {
     mkdir -p "$STATIC_DIR" 2>/dev/null
     mkdir -p "$TEMPLATE_DIR" 2>/dev/null
 
-    run_cmd "pip3 install flask --break-system-packages 2>/dev/null || pip3 install flask" "Menginstal Flask"
+    print_info "Menginstal Flask..."
+    apt install -y python3-flask 2>/dev/null && print_success "Flask via apt" || \
+    python3 -m pip install flask --break-system-packages 2>/dev/null && print_success "Flask via python3 -m pip" || \
+    pip3 install flask --break-system-packages 2>/dev/null && print_success "Flask via pip3" || \
+    pip3 install flask 2>/dev/null && print_success "Flask via pip3 (legacy)" || \
+    print_warning "Gagal install flask, coba metode alternatif..."
 
     # --- app.py ---
     print_info "Membuat aplikasi dashboard..."
@@ -1148,7 +1153,15 @@ install_motioneye() {
     check_storage 400 "MotionEye" || return
 
     run_cmd "apt install -y python3-pip python3-dev libssl-dev libcurl4-openssl-dev libjpeg-dev motion ffmpeg v4l-utils 2>/dev/null || true" "Menginstal dependensi"
-    run_cmd "pip3 install motioneye --break-system-packages 2>/dev/null || pip3 install motioneye 2>/dev/null || pip3 install motioneye --break-system-packages 2>/dev/null || true" "Menginstal motioneye"
+    print_info "Menginstal motioneye..."
+    apt install -y motioneye 2>/dev/null && print_success "motioneye via apt" || \
+    python3 -m pip install motioneye --break-system-packages 2>/dev/null && print_success "motioneye via python3 -m pip" || \
+    pip3 install motioneye --break-system-packages 2>/dev/null && print_success "motioneye via pip3" || \
+    pip3 install motioneye 2>/dev/null && print_success "motioneye via pip3 (legacy)" || \
+    print_warning "Gagal install motioneye via pip, coba dari source..."
+    if ! command -v meyectl &>/dev/null; then
+        pip3 install git+https://github.com/motioneye-project/motioneye.git --break-system-packages 2>/dev/null || true
+    fi
 
     mkdir -p /etc/motioneye /var/log/motioneye
 
