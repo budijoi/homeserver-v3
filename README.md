@@ -19,7 +19,6 @@ Self Hosted di STB Bekas — STB B860H v1 | Amlogic S905X | 1GB RAM | Armbian
 | **Storage** | SDCARD (EMMC rusak) |
 | **Log** | `/var/log/homeserver-install.log` |
 | **Author** | Budi Joi |
-| **Repo** | [github.com/budijoi](https://github.com/budijoi) |
 
 ### Komponen (diurutkan dari paling penting)
 
@@ -74,14 +73,16 @@ Self Hosted di STB Bekas — STB B860H v1 | Amlogic S905X | 1GB RAM | Armbian
 #### 1. Download Script
 
 ```bash
-git clone https://github.com/budijoi/homeserverv3.git
-cd homeserverv3
+git clone https://github.com/budijoi/homeserver-v3.git
+cd homeserver-v3
 ```
 
 Atau download langsung:
 
 ```bash
-wget -O install.sh https://raw.githubusercontent.com/budijoi/homeserverv3/main/install.sh
+wget -O install.sh https://raw.githubusercontent.com/budijoi/homeserver-v3/main/install.sh
+chmod +x install.sh
+sudo ./install.sh
 ```
 
 #### 2. Beri Izin & Jalankan
@@ -223,32 +224,6 @@ systemctl restart nginx
 | **BBR** | TCP congestion control |
 | **Firewall** | UFW: SSH, HTTP, HTTPS, Dashboard |
 | **sysctl** | swappiness=60, dirty_ratio=20, BBR aktif |
-
----
-
-## 🤝 Sosial Media
-
-| Platform | Akun |
-|----------|------|
-| Facebook | [budijoiBBJ](https://facebook.com/budijoiBBJ) |
-| Instagram | [budijoi_eco](https://instagram.com/budijoi_eco) |
-| Threads | [budijoi_eco](https://threads.net/budijoi_eco) |
-| X | [budijoi](https://x.com/budijoi) |
-| Github | [budijoi](https://github.com/budijoi) |
-
----
-
-## ❤️ Donasi
-
-| Metode | Detail |
-|--------|--------|
-| **DANA** | `085323073037` a.n. Budi Joi |
-| **Bank Mandiri** | `1310014031126` a.n. Budi Joi |
-| **Bank BNI** | `2027537451` a.n. Budi Joi |
-| **QRIS** | [Lihat QR](https://raw.githubusercontent.com/budijoi/budijoi.github.io/refs/heads/main/QRDANA2.JPG) |
-| **Konfirmasi** | [WhatsApp](https://wa.me/6288224553181) `+6288224553181` |
-
-Donasi juga bisa dilakukan langsung dari dashboard → klik tombol **Donasi**.
 
 ---
 
