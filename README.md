@@ -10,45 +10,53 @@ Self Hosted di STB Bekas — STB B860H v1 | Amlogic S905X | 1GB RAM | Armbian
 
 | Item | Detail |
 |------|--------|
-| **Nama** | `install.sh` |
-| **Versi** | 3.0 |
-| **Ukuran** | ~103 KB (2723 baris) |
-| **OS Target** | Armbian (Amlogic S905X) |
+| **File** | `install.sh` |
+| **Versi** | 3.1 |
+| **Ukuran** | ~85 KB (1781 baris) |
+| **OS** | Armbian (Amlogic S905X) |
 | **Device** | STB B860H v1 |
 | **RAM** | 1 GB |
 | **Storage** | SDCARD (EMMC rusak) |
-| **Bahasa** | Bash shell script |
+| **Log** | `/var/log/homeserver-install.log` |
 | **Author** | Budi Joi |
+| **Repo** | [github.com/budijoi](https://github.com/budijoi) |
 
-### Isi Script
+### Komponen (diurutkan dari paling penting)
 
-Script ini adalah **All-in-One Installer** yang mencakup:
-
-1. **Optimasi Sistem** — ZRAM 512MB, SWAP 1GB, CPU Governor Performance, BBR TCP, firewall UFW
-2. **Dashboard Monitor** — Web monitor dengan grafik Chart.js real-time, status CPU/RAM/ZRAM/SWAP/DISK/NETWORK
-3. **Micro Blog** — Pilihan: Ghost CMS (Node.js), WriteFreely (Go), Liveblog (Python)
-4. **File Manager** — Pilihan: FileBrowser, FileGator, FileRise
-5. **CCTV NVR** — Pilihan: Shinobi, MotionEye, Frigate (dengan kamera IP 192.168.101.6)
-6. **Cloudflared** — Cloudflare Tunnel untuk akses dari internet
-7. **TTYD + BTOP** — Terminal monitoring via browser
-
-### Fitur Dashboard
-
-- Grafik garis real-time (Chart.js) untuk CPU, RAM, ZRAM, SWAP, Disk
-- Status bar: CPU Load, Temperature, Jumlah Proses, SDCARD
-- Status service (online/offline) untuk Blog, File Manager, NVR, BTOP
-- Navigasi cepat ke semua layanan + GitHub repo
-- Ikon sosial media: Facebook, Instagram, Threads, X, Github
-- Popup donasi dengan DANA, Mandiri, BNI, QRIS, konfirmasi WhatsApp
+| # | Komponen | Pilihan | Port |
+|---|----------|---------|------|
+| 1 | **Optimasi Sistem** | ZRAM 512MB + SWAP 1GB + S905X tuning | — |
+| 2 | **Dashboard Monitor** | Grafik Chart.js real-time, navigasi layanan | 80/5000 |
+| 3 | **File Manager** | FileBrowser / FileGator / FileRise | 8080/8084/8085 |
+| 4 | **CCTV NVR** | Shinobi / MotionEye / Frigate | 8081/8765/8971 |
+| 5 | **Micro Blog** | Ghost / WriteFreely / Liveblog | 2368/8082/8083 |
+| 6 | **Cloudflared** | Cloudflare Tunnel | — |
+| 7 | **TTYD + BTOP** | Terminal monitoring via browser | 7681 |
 
 ### Login Default
 
-Semua layanan menggunakan kredensial yang sama:
+| Aplikasi | User | Password |
+|----------|------|----------|
+| Dashboard | — | — |
+| FileBrowser | `admin` | `admin12345678` |
+| FileGator | `admin` | `admin123` |
+| FileRise | (buat baru) | — |
+| Shinobi | (setup `/super`) | — |
+| MotionEye | `admin` | `admin12345678` |
+| Frigate | (auto-generate) | cek `docker logs frigate` |
+| Ghost | (setup `/ghost`) | — |
+| WriteFreely | (register baru) | — |
+| Liveblog | — | — |
+| BTOP/TTYD | `admin` | `admin12345678` |
 
-| Field | Value |
-|-------|-------|
-| **User** | `admin` |
-| **Password** | `admin12345678` |
+### Fitur Dashboard
+
+- Grafik real-time CPU, RAM, ZRAM, SWAP, Disk, Network (Chart.js)
+- Status bar: CPU Load, Temperature, Jumlah Proses, SDCARD
+- Status service online/offline untuk semua layanan
+- Navigasi cepat: Blog, File Manager, NVR, BTOP Terminal, GitHub
+- Sosial media: Facebook, Instagram, Threads, X, Github
+- Popup donasi: DANA, Mandiri, BNI, QRIS, konfirmasi WhatsApp
 
 ---
 
@@ -56,151 +64,200 @@ Semua layanan menggunakan kredensial yang sama:
 
 ### Persyaratan
 
-- STB B860H v1 (Amlogic S905X)
-- Sudah terinstal **Armbian** (minimal Ubuntu/Debian based)
+- STB B860H v1 (Amlogic S905X) dengan Armbian
 - Koneksi internet stabil
-- SDCARD dengan ruang kosong minimal **8 GB**
-- Akses root (sudo)
+- SDCARD minimal 8 GB (direkomendasikan 16 GB+)
+- Akses root (`sudo`)
 
 ### Langkah Instalasi
 
 #### 1. Download Script
 
-#### Download langsung
 ```bash
-wget -O install.sh https://raw.githubusercontent.com/budijoi/homeserver-v3/main/install.sh
-chmod +x install.sh
-./install.sh
+git clone https://github.com/budijoi/homeserverv3.git
+cd homeserverv3
 ```
 
-#### Atau Clone repositori
+Atau download langsung:
+
 ```bash
-git clone https://github.com/budijoi/homeserver-v3.git
-cd homeserver-v3
+wget -O install.sh https://raw.githubusercontent.com/budijoi/homeserverv3/main/install.sh
 ```
 
-#### 2. Beri Izin Eksekusi
+#### 2. Beri Izin & Jalankan
 
 ```bash
 chmod +x install.sh
-```
-
-#### 3. Jalankan Script
-
-```bash
 sudo ./install.sh
 ```
 
-Atau instal semua komponen sekaligus (tanpa menu):
+Untuk instalasi semua komponen sekaligus (tanpa menu):
 
 ```bash
 sudo ./install.sh --auto
 ```
 
-#### 4. Ikuti Petunjuk di Layar
+#### 3. Pilih Menu
 
 Script akan menampilkan menu interaktif:
 
 ```
-  ╔══════════════════════════════════════════════════════╗
-  ║     My Home Server v3                               ║
-  ║     STB B860H v1 | S905X | 1GB RAM                  ║
-  ║     EMMC Rungkad - Semua di SDCARD!                 ║
-  ╚══════════════════════════════════════════════════════╝
-
-  Pilih komponen yang akan diinstal:
-
-   1)  Optimasi Sistem      (ZRAM 512MB, SWAP 1GB, tuning S905X)
-   2)  Dashboard Monitor    (Web monitor + Chart.js grafik real-time)
-   3)  Micro Blog            (Ghost / WriteFreely / Liveblog)
-   4)  File Manager          (FileBrowser / FileGator / FileRise)
-   5)  CCTV NVR              (Shinobi / MotionEye / Frigate)
-   6)  Cloudflared           (Cloudflare Tunnel)
-   7)  TTYD + BTOP           (Terminal monitoring via browser)
-
-   8)  INSTAL ALL-IN-ONE     (Instal semua komponen)
-
+  Pilih komponen (diurutkan dari yang paling penting):
+   1)  Optimasi Sistem      (WAJIB - ZRAM, SWAP, tuning)
+   2)  Dashboard Monitor    (Grafik real-time, navigasi)
+   3)  File Manager         (FileBrowser/FileGator/FileRise)
+   4)  CCTV NVR             (Shinobi/MotionEye/Frigate)
+   5)  Micro Blog           (Ghost/WriteFreely/Liveblog)
+   6)  Cloudflared          (Cloudflare Tunnel)
+   7)  TTYD + BTOP          (Terminal via browser)
+   8)  INSTAL ALL-IN-ONE    (Semua komponen)
    0)  Keluar
 ```
 
-#### 5. Akses Dashboard
+#### 4. Akses Dashboard
 
-Setelah instalasi selesai, buka browser dan akses:
+Setelah instalasi selesai, buka browser:
 
 ```
 http://<IP-ADDRESS-STB>
 ```
 
-Cari IP address STB dengan:
+Cari IP dengan:
 
 ```bash
-ip addr show | grep inet
+hostname -I
 ```
 
 ---
 
-## 📡 Port Layanan
+## 🔧 Troubleshooting
 
-| Layanan | Port | URL |
-|---------|------|-----|
-| **Dashboard** | 80 / 5000 | `http://IP` |
-| **Ghost Blog** | 2368 | `http://IP:2368` |
-| **WriteFreely** | 8082 | `http://IP:8082` |
-| **Liveblog** | 8083 | `http://IP:8083` |
-| **FileBrowser** | 8080 | `http://IP:8080` |
-| **FileGator** | 8084 | `http://IP:8084` |
-| **FileRise** | 8085 | `http://IP:8085` |
-| **Shinobi NVR** | 8081 | `http://IP:8081` |
-| **MotionEye NVR** | 8765 | `http://IP:8765` |
-| **Frigate NVR** | 5000 | `http://IP:5000` |
-| **BTOP Terminal** | 7681 | `http://IP:7681` |
+### Cek status service
+
+```bash
+systemctl status homeserver-dashboard
+systemctl status filebrowser
+systemctl status ttyd
+```
+
+### Cek Docker container
+
+```bash
+docker ps -a
+docker logs <container-name>
+```
+
+### Cek log instalasi
+
+```bash
+cat /var/log/homeserver-install.log | tail -50
+```
+
+### Restart semua service
+
+```bash
+systemctl restart homeserver-dashboard filebrowser ttyd
+systemctl restart nginx
+```
 
 ---
 
 ## 📁 Struktur Folder
 
 ```
-/home/storage/
+/home/storage/                 # Data utama di SDCARD
 ├── My Document/
 ├── My Music/
 ├── My Pictures/
 ├── My Videos/
-│   └── NVR/              ← Rekaman CCTV
-├── ghost/                ← Data Ghost CMS
-├── writefreely/          ← Data WriteFreely
-├── liveblog/             ← Data Liveblog
-├── filegator/            ← Data FileGator
-├── filerise/             → Data FileRise
-├── shinobi/              ← Data Shinobi NVR
-├── frigate/              ← Data Frigate NVR
-└── swapfile              ← SWAP file 1GB
+│   └── NVR/                  ← Rekaman CCTV
+├── ghost/                    ← Data Ghost CMS
+├── writefreely/              ← Data WriteFreely
+├── liveblog/                 ← Data Liveblog
+├── filerise/                 ← Data FileRise
+│   ├── uploads/
+│   ├── users/
+│   └── metadata/
+├── shinobi/                  ← Data Shinobi
+│   ├── config/
+│   └── mysql/
+├── frigate/                  ← Data Frigate
+│   └── config/
+├── filebrowser-db/           ← DB FileBrowser
+├── filebrowser-config/       ← Config FileBrowser
+├── filegator-repo/           ← Repository FileGator
+└── swapfile                  ← SWAP file 1GB
 ```
 
 ---
 
-## ⚙️ Optimasi Sistem
+## 📡 Port Map
+
+| Port | Layanan |
+|------|---------|
+| 22 | SSH |
+| 80 | Dashboard (Nginx) |
+| 443 | HTTPS (cadangan) |
+| 2368 | Ghost Blog |
+| 5000 | Dashboard (Flask internal) |
+| 7681 | TTYD / BTOP Terminal |
+| 8080 | FileBrowser |
+| 8081 | Shinobi NVR |
+| 8082 | WriteFreely |
+| 8083 | Liveblog |
+| 8084 | FileGator |
+| 8085 | FileRise |
+| 8554 | Frigate RTSP |
+| 8765 | MotionEye NVR |
+| 8971 | Frigate NVR |
+
+---
+
+## ⚙️ Optimasi
 
 | Optimasi | Detail |
 |----------|--------|
-| **ZRAM** | 512MB, algoritma zstd, prioritas 100 |
+| **ZRAM** | 512MB, kompresi zstd, prioritas 100 |
 | **SWAP** | 1GB file di SDCARD |
 | **CPU** | Performance governor |
-| **BBR** | TCP congestion control aktif |
-| **Firewall** | UFW: SSH (22), HTTP (80), HTTPS (443), Dashboard (5000) |
-| **sysctl** | swappiness 60, cache pressure 50, dirty ratio 20 |
+| **BBR** | TCP congestion control |
+| **Firewall** | UFW: SSH, HTTP, HTTPS, Dashboard |
+| **sysctl** | swappiness=60, dirty_ratio=20, BBR aktif |
 
 ---
 
-## ⚠️ Catatan
+## 🤝 Sosial Media
 
-- Script ini dirancang khusus untuk **STB B860H v1 (S905X, 1GB RAM)**
-- **EMMC rusak** → pastikan SDCARD terpasang dan memiliki cukup ruang
-- Frigate membutuhkan **Google Coral TPU** untuk deteksi AI optimal
-- Semua service akan aktif otomatis saat STB dinyalakan (systemd)
-- Akses dashboard via browser di perangkat yang sama atau berbeda dalam satu jaringan
+| Platform | Akun |
+|----------|------|
+| Facebook | [budijoiBBJ](https://facebook.com/budijoiBBJ) |
+| Instagram | [budijoi_eco](https://instagram.com/budijoi_eco) |
+| Threads | [budijoi_eco](https://threads.net/budijoi_eco) |
+| X | [budijoi](https://x.com/budijoi) |
+| Github | [budijoi](https://github.com/budijoi) |
 
 ---
 
-## 📜 Lisensi
+## ❤️ Donasi
 
-MIT License — bebas digunakan, dimodifikasi, dan didistribusikan.
+| Metode | Detail |
+|--------|--------|
+| **DANA** | `085323073037` a.n. Budi Joi |
+| **Bank Mandiri** | `1310014031126` a.n. Budi Joi |
+| **Bank BNI** | `2027537451` a.n. Budi Joi |
+| **QRIS** | [Lihat QR](https://raw.githubusercontent.com/budijoi/budijoi.github.io/refs/heads/main/QRDANA2.JPG) |
+| **Konfirmasi** | [WhatsApp](https://wa.me/6288224553181) `+6288224553181` |
+
+Donasi juga bisa dilakukan langsung dari dashboard → klik tombol **Donasi**.
+
+---
+
+## ⚠️ Catatan Penting
+
+- **Armbian wajib** — Script didesain untuk Armbian di STB S905X
+- **EMMC rusak** — Pastikan SDCARD terpasang dengan ruang cukup
+- **Frigate** — Membutuhkan RAM besar (~512MB+). Tanpa Google Coral TPU, AI detection via CPU akan lambat
+- **Shinobi** — Image dari GitLab registry, mungkin butuh waktu download
+- **FileGator** — Login default `admin/admin123`, ubah password setelah instalasi
+- **Ghost** — Setup admin dilakukan saat pertama akses
+- **Semua service** — Akan aktif otomatis saat STB boot (systemd enabled)
